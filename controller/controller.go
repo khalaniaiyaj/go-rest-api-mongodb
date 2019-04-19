@@ -6,11 +6,11 @@ import (
 	"github.com/gorilla/context"
 	"github.com/go-chi/chi"
 	"github.com/dgrijalva/jwt-go"
-	. "github.com/user/golang-new/config"
-	. "github.com/user/golang-new/crypto"
-	. "github.com/user/golang-new/dao"
-	. "github.com/user/golang-new/helper"
-	. "github.com/user/golang-new/models"
+	. "github.com/user/go-rest-api-mongodb/config"
+	. "github.com/user/go-rest-api-mongodb/crypto"
+	. "github.com/user/go-rest-api-mongodb/dao"
+	. "github.com/user/go-rest-api-mongodb/helper"
+	. "github.com/user/go-rest-api-mongodb/models"
 	"gopkg.in/mgo.v2/bson"
 	"net/http"
 )
@@ -20,6 +20,7 @@ type Controller struct{}
 type JwtToken struct {
     Token string `json:"token"`
     Success bool `json:"success"`
+    Name string  `json:"name"`
 }
 
 var config = Config{}
@@ -146,6 +147,8 @@ func (c *Controller) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println(user)
+
 	// find user by name
 	newUser, err := dao.FindUserByName(user.Name)
 	if err != nil {
@@ -169,8 +172,22 @@ func (c *Controller) Login(w http.ResponseWriter, r *http.Request) {
     })
     
     tokenString, error := token.SignedString([]byte("secret"))
-	helper.RespondWithJson(w, http.StatusCreated, JwtToken{Token: tokenString, Success: true})
+	helper.RespondWithJson(w, http.StatusOK, JwtToken{Token: tokenString, Success: true, Name: newUser.Name })
 }
+
+// func (c *Controller) InsertMessage(message string) {
+// 	if err := json.NewDecoder(message).Decode(&message); err != nil {
+// 		helper.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+// 		return
+// 	}
+// 	message.ID = bson.NewObjectId()
+// 	if err := dao.InsertMessage(message); err != nil {
+// 		// helper.RespondWithError(w, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
+// 	return
+// }
+
 
 func (c *Controller) Init() {
 	config.Read()

@@ -1,7 +1,7 @@
 package dao
 
 import (
-	. "github.com/user/golang-new/models"
+	. "github.com/user/go-rest-api-mongodb/models"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
@@ -17,6 +17,7 @@ var db *mgo.Database
 const (
 	MOVIE_COLLECTION = "movies"
 	USER_COLLECTION  = "user"
+	MESSAGE_COLLECTION = "messages"
 )
 
 func (m *Dao) Connect() {
@@ -63,4 +64,9 @@ func (m *Dao) FindUserByName(name string) (User, error) {
 	var user User
 	err := db.C(USER_COLLECTION).Find(bson.M{"name": name}).One(&user)
 	return user, err
+}
+
+func (m *Dao) InsertMessage(msg MESSAGE) error {
+	err := db.C(MESSAGE_COLLECTION).Insert(&msg)
+	return err
 }

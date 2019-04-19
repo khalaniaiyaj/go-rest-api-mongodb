@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/context"
 	"net/http"
-	. "github.com/user/golang-new/dao"
+	. "github.com/user/go-rest-api-mongodb/dao"
 )
 
 type Middleware struct {}

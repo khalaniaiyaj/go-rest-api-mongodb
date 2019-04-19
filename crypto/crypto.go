@@ -2,7 +2,6 @@ package crypto
 
 import (
 	"golang.org/x/crypto/bcrypt"
-	"fmt"
 )
 
 type Hash struct {}
@@ -16,6 +15,5 @@ func (c *Hash) Generate(password string) (string, error) {
 
 func (c *Hash) Compare(hash,password string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	fmt.Println(err, "error")
 	return err
 }

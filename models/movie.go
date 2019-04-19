@@ -16,3 +16,8 @@ type User struct {
 	PhoneNumber 	string        `bson:"phone_number" json:"phone_number"`
 	Password		string        `bson:"password" json:"password,omitempty"`
 }
+
+type MESSAGE struct {
+	ID          bson.ObjectId    `bson:"_id" json:"id"`
+	Message        string        `bson:"message" json:"message"`
+}
